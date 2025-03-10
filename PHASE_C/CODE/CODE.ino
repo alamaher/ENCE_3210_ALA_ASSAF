@@ -1,7 +1,7 @@
 
 /// Including necessary libraries
 
-#include "I2Cdev.h" : // this will aloow for the communication of the I2C
+#include "I2Cdev.h" :// this will aloow for the communication of the I2C
 #include "MPU6050.h"
 
 /// Arduino Wire library is required if I2Cdev I2CDEV_ARDUINO_WIRE implementation
@@ -73,23 +73,23 @@ LightStatus currentStatus = LED_OFF; // initial state led is off
 LightStatus *current = &currentStatus; // instanitanous or current state of the LED 
 
 /// Function which changes LED mode either on or off.
-void toggleLightMode(LightStatus *choice){
-///lthe isr is set to execute when the button is pressed because you want something that will execute immediately to turn on or off the led
-  switch(*choice){
+void toggleLightMode(LightStatus *choice) {
+  switch (*choice) {
     case LED_ON:
       digitalWrite(LED, HIGH);
-      // if lightoggle is set, the function switcthes to the opoosite of the previous state
-        lightToggle = 0;
-      }
-      break;
-    case LED_OFF:
-      digitalWrite(LED, LOW);
       if (lightToggle){
-        *choice = LED_ON;
+        *choice = LED_OFF;  // Ensure state change
         lightToggle = 0;
       }
       break;
 
+    case LED_OFF:
+      digitalWrite(LED, LOW);
+      if (lightToggle) {
+        *choice = LED_ON;
+        lightToggle = 0;
+      }
+      break;
   }
 }
 // to determine if a long press is initialized; 1.5 s. if it is, coversion b/w C and F
